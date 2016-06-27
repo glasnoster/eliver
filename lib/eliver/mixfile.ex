@@ -7,6 +7,15 @@ defmodule Eliver.MixFile do
     end
   end
 
+  def bump(new_version, filename \\ default_mixfile) do
+    case File.read(filename) do
+      {:ok, body} ->
+        new_contents  = Regex.replace(version_regex, body, new_version)
+        File.write(filename, new_contents)
+      {:error, reason} -> nil
+    end
+  end
+
   defp default_mixfile, do: "mix.exs"
 
   defp version_regex, do: ~r/(?<=version: ")(.*)(?=")/
