@@ -1,6 +1,8 @@
 # Eliver
 
-**TODO: Add description**
+An Elixir clone of [semvergen](https://github.com/glasnoster/semvergen) in order to learn the basics of the language.
+
+I hope it will be useful someday
 
 ## Installation
 
@@ -21,4 +23,10 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
       [applications: [:eliver]]
     end
     ```
+
+## Usage
+
+```bash
+$ ./eliver bump
+```
 
