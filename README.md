@@ -27,6 +27,6 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ## Usage
 
 ```bash
-$ ./eliver bump
+$ mix eliver.bump
 ```
 
