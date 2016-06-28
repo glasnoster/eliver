@@ -11,25 +11,50 @@ defmodule Eliver do
   def process(args) do
     case hd(args) do
       "bump" ->
-        new_version = get_new_version
-        IO.puts "New version: #{new_version}"
+        IO.puts Eliver.Git.current_branch
+        git_fail = cond do
+          !Eliver.Git.is_tracking_branch? ->
+            IO.puts "This branch is not tracking a remote branch. Aborting..."
+          !Eliver.Git.on_master? && !continue_on_branch? ->
+            IO.puts "Aborting..."
+          Eliver.Git.index_dirty? ->
+            IO.puts "Git index dirty. Commit changes before continuing"
+          Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
+            IO.puts "This branch is not up to date with upstream"
+          true ->
+            false
+        end
 
-        changelog_entries = get_changelog_entries
-        Eliver.MixFile.bump(new_version)
-        Eliver.ChangeLogFile.bump(new_version, changelog_entries)
-        # if release?
+        unless git_fail do
+          new_version = get_new_version
+          IO.puts "New version: #{new_version}"
+
+          changelog_entries = get_changelog_entries
+          Eliver.MixFile.bump(new_version)
+          Eliver.ChangeLogFile.bump(new_version, changelog_entries)
+
+          Eliver.Git.commit!(new_version, changelog_entries)
+        end
     end
   end
 
   defp release? do
-    release = IO.gets("Release? (Y/n) ") |> remove_trailing_newline
-    case release do
+    ask "Release? (Y/n)"
+  end
+
+    defp continue_on_branch? do
+    ask "You are not on master. It is not recommended to create releases from a branch unless they're maintenance releases. Continue? (Y/n) "
+  end
+
+  defp ask(question) do
+    result = IO.gets(question) |> remove_trailing_newline
+    case result do
       ""  -> true
       "Y" -> true
       "y" -> true
       "n" -> false
       "N" -> false
-      _   -> release?
+      _   -> ask(question)
     end
   end
 
