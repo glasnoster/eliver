@@ -39,6 +39,10 @@ defmodule Eliver.Git do
     git "tag", ["#{new_version}", "-a", "-m", "Version: #{new_version}"]
   end
 
+  def push!(new_version) do
+    git "push", ["-q", "origin", current_branch, new_version]
+  end
+
   defp git(command, args) when is_list(args) do
     run_git_command(command, args)
   end

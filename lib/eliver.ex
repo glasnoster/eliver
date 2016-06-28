@@ -11,7 +11,6 @@ defmodule Eliver do
   def process(args) do
     case hd(args) do
       "bump" ->
-        IO.puts Eliver.Git.current_branch
         git_fail = cond do
           !Eliver.Git.is_tracking_branch? ->
             IO.puts "This branch is not tracking a remote branch. Aborting..."
@@ -34,6 +33,9 @@ defmodule Eliver do
           Eliver.ChangeLogFile.bump(new_version, changelog_entries)
 
           Eliver.Git.commit!(new_version, changelog_entries)
+
+          IO.puts "Pushing to origin..."
+          Eliver.Git.push!(new_version)
         end
     end
   end
