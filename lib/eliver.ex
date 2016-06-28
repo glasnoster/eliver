@@ -10,33 +10,36 @@ defmodule Eliver do
 
   def process(args) do
     case hd(args) do
-      "bump" ->
-        git_fail = cond do
-          !Eliver.Git.is_tracking_branch? ->
-            IO.puts "This branch is not tracking a remote branch. Aborting..."
-          !Eliver.Git.on_master? && !continue_on_branch? ->
-            IO.puts "Aborting..."
-          Eliver.Git.index_dirty? ->
-            IO.puts "Git index dirty. Commit changes before continuing"
-          Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
-            IO.puts "This branch is not up to date with upstream"
-          true ->
-            false
-        end
+      "bump" -> bump
+    end
+  end
 
-        unless git_fail do
-          new_version = get_new_version
-          IO.puts "New version: #{new_version}"
+  defp bump do
+    git_fail = cond do
+      !Eliver.Git.is_tracking_branch? ->
+        IO.puts "This branch is not tracking a remote branch. Aborting..."
+      !Eliver.Git.on_master? && !continue_on_branch? ->
+        IO.puts "Aborting..."
+      Eliver.Git.index_dirty? ->
+        IO.puts "Git index dirty. Commit changes before continuing"
+      Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
+        IO.puts "This branch is not up to date with upstream"
+      true ->
+        false
+    end
 
-          changelog_entries = get_changelog_entries
-          Eliver.MixFile.bump(new_version)
-          Eliver.ChangeLogFile.bump(new_version, changelog_entries)
+    unless git_fail do
+      new_version = get_new_version
+      IO.puts "New version: #{new_version}"
 
-          Eliver.Git.commit!(new_version, changelog_entries)
+      changelog_entries = get_changelog_entries
+      Eliver.MixFile.bump(new_version)
+      Eliver.ChangeLogFile.bump(new_version, changelog_entries)
 
-          IO.puts "Pushing to origin..."
-          Eliver.Git.push!(new_version)
-        end
+      Eliver.Git.commit!(new_version, changelog_entries)
+
+      IO.puts "Pushing to origin..."
+      Eliver.Git.push!(new_version)
     end
   end
 
@@ -71,7 +74,7 @@ defmodule Eliver do
 
   defp get_changelog_entries do
     IO.puts("Enter the changes")
-    opts = do_get_changelog_entries
+    do_get_changelog_entries
   end
 
   defp do_get_changelog_entries do

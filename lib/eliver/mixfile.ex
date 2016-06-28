@@ -3,7 +3,7 @@ defmodule Eliver.MixFile do
     case File.read(filename) do
       {:ok, body} ->
         (Regex.run(version_regex, body) || []) |> Enum.at(0)
-      {:error, reason} -> nil
+      {:error, _} -> nil
     end
   end
 
@@ -12,7 +12,7 @@ defmodule Eliver.MixFile do
       {:ok, body} ->
         new_contents  = Regex.replace(version_regex, body, new_version)
         File.write(filename, new_contents)
-      {:error, reason} -> nil
+      {:error, _} -> nil
     end
   end
 
