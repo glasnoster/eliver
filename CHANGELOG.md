@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.0.0
+* Made bump a mix task
+
 # 0.3.0
 * Automatically push to origin when done
 
