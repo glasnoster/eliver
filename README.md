@@ -16,17 +16,13 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     end
     ```
 
-  2. Ensure `eliver` is started before your application:
-
-    ```elixir
-    def application do
-      [applications: [:eliver]]
-    end
-    ```
-
 ## Usage
 
 ```bash
 $ mix eliver.bump
 ```
 
+## TODO
+
+* Add release support
+* Clean up prompt code (maybe create a separate package that provides a pretty dsl to prompt for user input?)
