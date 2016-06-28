@@ -42,7 +42,7 @@ defmodule Eliver do
     ask "Release? (Y/n)"
   end
 
-    defp continue_on_branch? do
+  defp continue_on_branch? do
     ask "You are not on master. It is not recommended to create releases from a branch unless they're maintenance releases. Continue? (Y/n) "
   end
 
