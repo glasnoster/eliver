@@ -1,6 +1,7 @@
 # Eliver
 
 [![CircleCI](https://circleci.com/gh/glasnoster/eliver.svg?style=svg)](https://circleci.com/gh/glasnoster/eliver)
+[![Hex.pm](https://img.shields.io/hexpm/v/eliver.svg?style=flat-square)](https://hex.pm/packages/eliver)
 
 Interactive semantic versioning for Elixir packages.
 
