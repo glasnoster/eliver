@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.0.2
+* Added CI fixes
+
 # 1.0.1
 * Updated readme
 
