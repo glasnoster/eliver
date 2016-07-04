@@ -1,5 +1,7 @@
 # Eliver
 
+[![CircleCI](https://circleci.com/gh/glasnoster/eliver.svg?style=svg)](https://circleci.com/gh/glasnoster/eliver)
+
 An Elixir clone of [semvergen](https://github.com/glasnoster/semvergen) in order to learn the basics of the language.
 
 I hope it will be useful someday
