@@ -20,7 +20,7 @@ Eliver...
 
     ```elixir
     def deps do
-      [{:eliver, "~> 0.1.0"}]
+      [{:eliver, "~> 1.0.0"}]
     end
     ```
 
