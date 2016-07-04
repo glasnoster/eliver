@@ -3,7 +3,7 @@ defmodule EliverTest do
   use ExUnit.Case
   doctest Eliver
 
-  setup_all do
+  setup do
     File.copy("test/support/test_with_version_template.exs", "test/support/test_with_version.exs")
     File.copy("test/support/test_without_version_template.exs", "test/support/test_without_version.exs")
     File.copy("test/support/CHANGELOG_template.md", "test/support/CHANGELOG.md")
