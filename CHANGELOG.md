@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.0.4
+* Added package description
+
 # 1.0.3
 * Added package maintainer info
 
