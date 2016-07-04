@@ -1,5 +1,5 @@
 defmodule Eliver.MixFile do
-  def version_from_mixfile(filename \\ default_mixfile) do
+  def version_from_mixfile(filename \\ "mix.exs") do
     case File.read(filename) do
       {:ok, body} ->
         (Regex.run(version_regex, body) || []) |> Enum.at(0)
@@ -7,7 +7,7 @@ defmodule Eliver.MixFile do
     end
   end
 
-  def bump(new_version, filename \\ default_mixfile) do
+  def bump(new_version, filename \\ "mix.exs") do
     case File.read(filename) do
       {:ok, body} ->
         new_contents  = Regex.replace(version_regex, body, new_version)
@@ -15,8 +15,6 @@ defmodule Eliver.MixFile do
       {:error, _} -> nil
     end
   end
-
-  defp default_mixfile, do: "mix.exs"
 
   defp version_regex, do: ~r/(?<=version: ")(.*)(?=")/
 

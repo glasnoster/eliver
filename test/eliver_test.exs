@@ -32,15 +32,15 @@ defmodule EliverTest do
 
   describe "getting the next version" do
     test "bumps a patch" do
-      assert Eliver.Bump.next_version("1.0.1", :patch) == "1.0.2"
+      assert Eliver.next_version("1.0.1", :patch) == "1.0.2"
     end
 
     test "bumps a minor version" do
-      assert Eliver.Bump.next_version("1.0.1", :minor) == "1.1.0"
+      assert Eliver.next_version("1.0.1", :minor) == "1.1.0"
     end
 
     test "bumps a major version" do
-      assert Eliver.Bump.next_version("1.0.1", :major) == "2.0.0"
+      assert Eliver.next_version("1.0.1", :major) == "2.0.0"
     end
   end
 
