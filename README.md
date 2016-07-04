@@ -2,13 +2,18 @@
 
 [![CircleCI](https://circleci.com/gh/glasnoster/eliver.svg?style=svg)](https://circleci.com/gh/glasnoster/eliver)
 
-An Elixir clone of [semvergen](https://github.com/glasnoster/semvergen) in order to learn the basics of the language.
+Interactive semantic versioning for Elixir packages.
 
-I hope it will be useful someday
+Eliver is an Elixir clone of [semvergen](https://github.com/brendon9x/semvergen)
+
+Eliver...
+* bumps the version in `mix.exs`
+* prompts the user for changelog entries and updates `CHANGELOG.md`
+* commits these changes
+* creates a tag
+* pushes to origin
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
   1. Add `eliver` to your list of dependencies in `mix.exs`:
 
@@ -26,5 +31,9 @@ $ mix eliver.bump
 
 ## TODO
 
-* Add release support
+* Add support to release the package to Hex
 * Clean up prompt code (maybe create a separate package that provides a pretty dsl to prompt for user input?)
+
+## Contributing
+
+Please do.
