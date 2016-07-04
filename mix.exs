@@ -7,7 +7,7 @@ defmodule Eliver.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     decription: "Interactive semantic versioning for Elixir packages",
+     description: "Interactive semantic versioning for Elixir packages",
      deps: deps()]
   end
 
