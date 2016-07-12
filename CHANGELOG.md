@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.1.0
+* Eliver creates a changelog file if it doesn't exist
+* Changelog regex is case insensitive
+
 # 1.0.4
 * Added package description
 
