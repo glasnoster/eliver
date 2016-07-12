@@ -1,13 +1,14 @@
 require IEx
 defmodule Eliver.ChangeLogFile do
-  def bump(new_version, changelog_entries, filename \\ default_changelog_file) do
-    case File.read(filename) do
+  def bump(new_version, changelog_entries, filename \\ "CHANGELOG.md") do
+    bump_entry = make_bump_entry(new_version, changelog_entries)
+    new_body = case File.read(filename) do
       {:ok, body} ->
-        bump_entry = make_bump_entry(new_version, changelog_entries)
-        new_body = String.replace(body, "# Changelog\n", bump_entry)
-        File.write(filename, new_body)
-      {:error, reason} -> nil
+        Regex.replace(~r/\# changelog\n/i, body, bump_entry)
+      {:error, _} ->
+        bump_entry
     end
+    File.write(filename, new_body)
   end
 
   defp make_bump_entry(new_version, changelog_entries) do
@@ -18,7 +19,5 @@ defmodule Eliver.ChangeLogFile do
     #{Enum.map(changelog_entries, fn(x) -> "* " <> x end) |> Enum.join("\n")}
     """
   end
-
-  defp default_changelog_file, do: "CHANGELOG.md"
 
 end
