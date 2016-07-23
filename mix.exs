@@ -27,6 +27,8 @@ defmodule Eliver.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:enquirer, path: "/Users/martin/work/enquirer"}
+    ]
   end
 end
