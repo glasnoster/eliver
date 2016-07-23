@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.2.0
+* Changed to using enquirer to get user input
+
 # 1.1.0
 * Eliver creates a changelog file if it doesn't exist
 * Changelog regex is case insensitive
