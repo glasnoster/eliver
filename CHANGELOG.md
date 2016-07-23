@@ -1,5 +1,15 @@
 # Changelog
 
+# 1.1.2
+* fff
+* fff
+* fff
+* fff
+* fff
+* fff
+* fff
+* fff
+
 # 1.1.1
 
 
