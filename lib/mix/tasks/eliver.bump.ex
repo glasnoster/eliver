@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Eliver.Bump do
   use Mix.Task
+  import Enquirer
 
   def run(args) do
     args |> parse_args |> bump
@@ -8,20 +9,20 @@ defmodule Mix.Tasks.Eliver.Bump do
   defp bump(_) do
     git_fail = cond do
       !Eliver.Git.is_tracking_branch? ->
-        IO.puts "This branch is not tracking a remote branch. Aborting..."
+        say "This branch is not tracking a remote branch. Aborting...", :red
       !Eliver.Git.on_master? && !continue_on_branch? ->
-        IO.puts "Aborting..."
+        say "Aborting...", :red
       Eliver.Git.index_dirty? ->
-        IO.puts "Git index dirty. Commit changes before continuing"
+        say "Git index dirty. Commit changes before continuing", :red
       Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
-        IO.puts "This branch is not up to date with upstream"
+        say "This branch is not up to date with upstream", :red
       true ->
         false
     end
 
     unless git_fail do
       new_version = get_new_version
-      IO.puts "New version: #{new_version}"
+      say "New version: #{new_version}", :green
 
       changelog_entries = get_changelog_entries
       Eliver.MixFile.bump(new_version)
@@ -29,24 +30,17 @@ defmodule Mix.Tasks.Eliver.Bump do
 
       Eliver.Git.commit!(new_version, changelog_entries)
 
-      IO.puts "Pushing to origin..."
+      say "Pushing to origin..."
       Eliver.Git.push!(new_version)
     end
   end
 
   defp continue_on_branch? do
-    ask "You are not on master. It is not recommended to create releases from a branch unless they're maintenance releases. Continue? (Y/n) "
-  end
-
-  defp ask(question) do
-    result = IO.gets(question) |> remove_trailing_newline
+    question = "You are not on master. It is not recommended to create releases from a branch unless they're maintenance releases. Continue?"
+    result = ask question, false
     case result do
-      ""  -> true
-      "Y" -> true
-      "y" -> true
-      "n" -> false
-      "N" -> false
-      _   -> ask(question)
+      {:ok, value} -> value
+      {:error, _}  -> continue_on_branch?
     end
   end
 
@@ -55,28 +49,21 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp get_changelog_entries do
-    IO.puts("Enter the changes")
-    do_get_changelog_entries
-  end
-
-  defp do_get_changelog_entries do
-    option = IO.gets("* ") |> remove_trailing_newline
-    if option != "", do: [option] ++ do_get_changelog_entries, else: []
+    {:ok, result} = get_list "Enter the changes"
+    result
   end
 
   defp get_bump_type do
-    selected_option = IO.gets("""
-    Select release type:
-      1. Patch: Bug fixes, recommended for all (default)
-      2. Minor: New features, but backwards compatible
-      3. Major: Breaking changes
-    """) |> remove_trailing_newline
+    result = choose "Select release type",
+      patch:   "Bug fixes, recommended for all",
+      minor:   "New features, but backwards compatible",
+      major:   "Breaking changes",
+      default: :patch
 
-    %{"1" => :patch, "2" => :minor, "3" => :major}[selected_option] || get_bump_type
-  end
-
-  defp remove_trailing_newline(str) do
-    String.replace_trailing(str, "\n", "")
+    case result do
+      {:ok, value} -> value
+      {:error, _}  -> get_bump_type
+    end
   end
 
   defp parse_args(args) do

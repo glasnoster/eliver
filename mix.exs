@@ -27,6 +27,8 @@ defmodule Eliver.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:enquirer, "~> 0.1.0"}
+    ]
   end
 end
