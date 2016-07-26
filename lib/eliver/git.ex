@@ -16,12 +16,14 @@ defmodule Eliver.Git do
   end
 
   def is_tracking_branch? do
-    tracking_check = git "rev-list", ["HEAD..@{u}", "--count"]
-    elem(tracking_check, 0) == :ok
+    tracking_check = git("rev-list", ["HEAD..@{u}", "--count"]) |> elem(0)
+    tracking_check == :ok
   end
 
   def current_branch do
-    elem(git("symbolic-ref", ["--short", "HEAD"]), 1) |> remove_trailing_newline
+    git("symbolic-ref", ["--short", "HEAD"])
+    |> elem(1)
+    |> remove_trailing_newline
   end
 
   def on_master? do
@@ -51,7 +53,7 @@ defmodule Eliver.Git do
     run_git_command(command, [args])
   end
 
-  defp run_git_command(command, args \\ []) do
+  defp run_git_command(command, args) do
     result = System.cmd("git", [command] ++ args)
     case result do
       {value, 0} -> {:ok, value}
