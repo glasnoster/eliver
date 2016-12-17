@@ -7,31 +7,55 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp bump(_) do
-    git_fail = cond do
-      !Eliver.Git.is_tracking_branch? ->
-        say "This branch is not tracking a remote branch. Aborting...", :red
-      !Eliver.Git.on_master? && !continue_on_branch? ->
-        say "Aborting...", :red
-      Eliver.Git.index_dirty? ->
-        say "Git index dirty. Commit changes before continuing", :red
-      Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
-        say "This branch is not up to date with upstream", :red
-      true ->
-        false
+    case check_for_git_problems do
+      {:error, message} ->
+        say message, :red
+      {:ok} ->
+        {new_version, changelog_entries} = get_changes
+        if allow_changes?(new_version, changelog_entries) do
+          make_changes(new_version, changelog_entries)
+        end
     end
+  end
 
-    unless git_fail do
-      new_version = get_new_version
-      say "New version: #{new_version}", :green
+  defp get_changes do
+    {get_new_version, get_changelog_entries}
+  end
 
-      changelog_entries = get_changelog_entries
-      Eliver.MixFile.bump(new_version)
-      Eliver.ChangeLogFile.bump(new_version, changelog_entries)
+  defp allow_changes?(new_version, changelog_entries) do
+    current_version = Eliver.MixFile.version_from_mixfile
+    say "\n"
+    say "Summary of changes:"
+    say "Bumping version #{current_version} → #{new_version}", :green
+    say ("#{Enum.map(changelog_entries, fn(x) -> "* " <> x end) |> Enum.join("\n")}"), :green
+    say "\n"
+    result = ask "Continue?", false
+    case result do
+      {:ok, value} -> value
+      {:error, _}  -> false
+    end
+  end
 
-      Eliver.Git.commit!(new_version, changelog_entries)
+  defp make_changes(new_version, changelog_entries) do
+    Eliver.MixFile.bump(new_version)
+    Eliver.ChangeLogFile.bump(new_version, changelog_entries)
+    Eliver.Git.commit!(new_version, changelog_entries)
+    say "Pushing to origin..."
+    Eliver.Git.push!(new_version)
+  end
 
-      say "Pushing to origin..."
-      Eliver.Git.push!(new_version)
+  defp check_for_git_problems do
+    cond do
+      !Eliver.Git.is_tracking_branch? ->
+        {:error, "This branch is not tracking a remote branch. Aborting..."}
+      !Eliver.Git.on_master? && !continue_on_branch? ->
+        {:error, "Aborting"}
+      Eliver.Git.index_dirty? ->
+        {:error, "Git index dirty. Commit changes before continuing"}
+      Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
+        {:error, "This branch is not up to date with upstream"}
+      true ->
+        {:ok}
     end
   end
 
