@@ -33,7 +33,6 @@ $ mix eliver.bump
 ## TODO
 
 * Add support to release the package to Hex
-* Clean up prompt code (maybe create a separate package that provides a pretty dsl to prompt for user input?)
 
 ## Contributing
 
