@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.3.0
+* Changed flow to summarise changes and ask for confirmation before applying changes
+
 # 1.2.0
 * Changed to using enquirer to get user input
 
