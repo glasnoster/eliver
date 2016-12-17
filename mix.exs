@@ -28,7 +28,8 @@ defmodule Eliver.Mixfile do
 
   defp deps do
     [
-      {:enquirer, "~> 0.1.0"}
+      {:enquirer, "~> 0.1.0"},
+      {:ex_doc, "~> 0.12", only: :dev}
     ]
   end
 end
