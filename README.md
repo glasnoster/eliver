@@ -14,6 +14,8 @@ Eliver...
 * creates a tag
 * pushes to origin
 
+![](https://raw.githubusercontent.com/glasnoster/eliver/master/eliver.gif)
+
 ## Installation
 
   1. Add `eliver` to your list of dependencies in `mix.exs`:
