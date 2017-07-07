@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1
+* Make version H2 in changelog
+
 # 1.3.0
 * Changed flow to summarise changes and ask for confirmation before applying changes
 
