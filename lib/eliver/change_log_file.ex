@@ -15,7 +15,7 @@ defmodule Eliver.ChangeLogFile do
     """
     # Changelog
 
-    # #{new_version}
+    ## #{new_version}
     #{Enum.map(changelog_entries, fn(x) -> "* " <> x end) |> Enum.join("\n")}
     """
   end
