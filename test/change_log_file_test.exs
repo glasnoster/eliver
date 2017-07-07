@@ -19,15 +19,15 @@ defmodule Eliver.ChangeLogFileTest do
       """
       # Changelog
 
-      # 1.1.0
+      ## 1.1.0
       * e1
       * e2
 
-      # 1.0.1
+      ## 1.0.1
       * Entry 1
       * Entry 2
 
-      # 1.0.0
+      ## 1.0.0
       * Entry 1
       """
     end
@@ -50,7 +50,7 @@ defmodule Eliver.ChangeLogFileTest do
       """
       # Changelog
 
-      # 1.1.0
+      ## 1.1.0
       * e1
       * e2
       """
