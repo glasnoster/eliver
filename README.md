@@ -20,11 +20,11 @@ Eliver...
 
   1. Add `eliver` to your list of dependencies in `mix.exs`:
 
-    ```elixir
-    def deps do
-      [{:eliver, "~> 1.0.0"}]
-    end
-    ```
+```elixir
+def deps do
+  [{:eliver, "~> 1.0.0"}]
+end
+```
 
 ## Usage
 
