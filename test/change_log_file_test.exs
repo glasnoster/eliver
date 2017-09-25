@@ -35,13 +35,13 @@ defmodule Eliver.ChangeLogFileTest do
     test "it updates the changelog" do
       Eliver.ChangeLogFile.bump("1.1.0", ["e1", "e2"], "test/support/CHANGELOG.md")
       {:ok, changelog_contents} = File.read("test/support/CHANGELOG.md")
-      assert changelog_contents == expected_existing_changelog_contents
+      assert changelog_contents == expected_existing_changelog_contents()
     end
 
     test "it is case insensitive and updates the changelog" do
       Eliver.ChangeLogFile.bump("1.1.0", ["e1", "e2"], "test/support/CHANGELOG2.md")
       {:ok, changelog_contents} = File.read("test/support/CHANGELOG2.md")
-      assert changelog_contents == expected_existing_changelog_contents
+      assert changelog_contents == expected_existing_changelog_contents()
     end
   end
 
@@ -58,7 +58,7 @@ defmodule Eliver.ChangeLogFileTest do
     test "it creates the changelog file if it doesn't exist" do
       Eliver.ChangeLogFile.bump("1.1.0", ["e1", "e2"], "test/support/test.md")
       {:ok, new_change_log_contents} = File.read("test/support/test.md")
-      assert new_change_log_contents == expected_new_changelog_contents
+      assert new_change_log_contents == expected_new_changelog_contents()
     end
   end
 

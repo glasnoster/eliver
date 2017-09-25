@@ -27,7 +27,7 @@ defmodule Eliver.Git do
   end
 
   def on_master? do
-    current_branch == "master"
+    current_branch() == "master"
   end
 
   def fetch! do
@@ -42,7 +42,7 @@ defmodule Eliver.Git do
   end
 
   def push!(new_version) do
-    git "push", ["-q", "origin", current_branch, new_version]
+    git "push", ["-q", "origin", current_branch(), new_version]
   end
 
   defp git(command, args) when is_list(args) do

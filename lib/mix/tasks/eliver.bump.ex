@@ -7,11 +7,11 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp bump(_) do
-    case check_for_git_problems do
+    case check_for_git_problems() do
       {:error, message} ->
         say message, :red
       {:ok} ->
-        {new_version, changelog_entries} = get_changes
+        {new_version, changelog_entries} = get_changes()
         if allow_changes?(new_version, changelog_entries) do
           make_changes(new_version, changelog_entries)
         end
@@ -19,11 +19,11 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp get_changes do
-    {get_new_version, get_changelog_entries}
+    {get_new_version(), get_changelog_entries()}
   end
 
   defp allow_changes?(new_version, changelog_entries) do
-    current_version = Eliver.MixFile.version_from_mixfile
+    current_version = Eliver.MixFile.version
     say "\n"
     say "Summary of changes:"
     say "Bumping version #{current_version} → #{new_version}", :green
@@ -48,7 +48,7 @@ defmodule Mix.Tasks.Eliver.Bump do
     cond do
       !Eliver.Git.is_tracking_branch? ->
         {:error, "This branch is not tracking a remote branch. Aborting..."}
-      !Eliver.Git.on_master? && !continue_on_branch? ->
+      !Eliver.Git.on_master? && !continue_on_branch?() ->
         {:error, "Aborting"}
       Eliver.Git.index_dirty? ->
         {:error, "Git index dirty. Commit changes before continuing"}
@@ -64,12 +64,12 @@ defmodule Mix.Tasks.Eliver.Bump do
     result = ask question, false
     case result do
       {:ok, value} -> value
-      {:error, _}  -> continue_on_branch?
+      {:error, _}  -> continue_on_branch?()
     end
   end
 
   defp get_new_version do
-    Eliver.MixFile.version_from_mixfile |> Eliver.next_version(get_bump_type)
+    Eliver.MixFile.version |> Eliver.next_version(get_bump_type())
   end
 
   defp get_changelog_entries do
@@ -86,7 +86,7 @@ defmodule Mix.Tasks.Eliver.Bump do
 
     case result do
       {:ok, value} -> value
-      {:error, _}  -> get_bump_type
+      {:error, _}  -> get_bump_type()
     end
   end
 
