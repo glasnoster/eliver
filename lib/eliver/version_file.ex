@@ -1,4 +1,4 @@
-defmodule Eliver.MixFile do
+defmodule Eliver.VersionFile do
 
   @version_regex ~r/([0-9]+\.[0-9]+\.[0-9]+)/
 
