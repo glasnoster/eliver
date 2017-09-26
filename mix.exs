@@ -4,7 +4,7 @@ defmodule Eliver.Mixfile do
   def project do
     [
       app: :eliver,
-      version: "1.3.1",
+      version: String.trim(File.read!("VERSION")),
       elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,

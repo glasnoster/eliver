@@ -14,8 +14,6 @@ Eliver...
 * creates a tag
 * pushes to origin
 
-![](https://raw.githubusercontent.com/glasnoster/eliver/master/eliver.gif)
-
 ## Installation
 
   1. Add `eliver` to your list of dependencies in `mix.exs`:
@@ -24,6 +22,12 @@ Eliver...
 def deps do
   [{:eliver, "~> 1.0.0"}]
 end
+```
+
+  2. Create a VERSION file with the initial version in the root of the project
+  3. In `mix.exs`, read the version from `VERSION`
+```elixir
+version: String.trim(File.read!("VERSION")),
 ```
 
 ## Usage
