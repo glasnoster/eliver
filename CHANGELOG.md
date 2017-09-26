@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+* Use VERSION file to store version instead of mix.exs
+* Fix warnings
+
 ## 1.3.1
 * Make version H2 in changelog
 
