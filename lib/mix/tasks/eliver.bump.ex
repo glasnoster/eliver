@@ -23,7 +23,7 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp allow_changes?(new_version, changelog_entries) do
-    current_version = Eliver.MixFile.version
+    current_version = Eliver.VersionFile.version
     say "\n"
     say "Summary of changes:"
     say "Bumping version #{current_version} → #{new_version}", :green
@@ -37,7 +37,7 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp make_changes(new_version, changelog_entries) do
-    Eliver.MixFile.bump(new_version)
+    Eliver.VersionFile.bump(new_version)
     Eliver.ChangeLogFile.bump(new_version, changelog_entries)
     Eliver.Git.commit!(new_version, changelog_entries)
     say "Pushing to origin..."
@@ -69,7 +69,7 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp get_new_version do
-    Eliver.MixFile.version |> Eliver.next_version(get_bump_type())
+    Eliver.VersionFile.version |> Eliver.next_version(get_bump_type())
   end
 
   defp get_changelog_entries do
