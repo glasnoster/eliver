@@ -22,7 +22,8 @@ defmodule Eliver.Mixfile do
     [
       maintainers: ["Martin Pretorius"],
       licenses:    ["MIT"],
-      links:       %{"GitHub" => "https://github.com/glasnoster/eliver"}
+      links:       %{"GitHub" => "https://github.com/glasnoster/eliver"},
+      files:       ["lib", "mix.exs", "README.md", "VERSION"],
     ]
   end
 
