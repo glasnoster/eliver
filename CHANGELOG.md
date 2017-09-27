@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2
+* Include VERSION in hex package
+
 ## 2.0.1
 * Commit updated VERSION file
 
