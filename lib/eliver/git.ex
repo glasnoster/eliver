@@ -36,7 +36,7 @@ defmodule Eliver.Git do
 
   def commit!(new_version, changelog_entries) do
     git "add", "CHANGELOG.md"
-    git "add", "mix.exs"
+    git "add", "VERSION"
     git "commit", ["-m", commit_message(new_version, changelog_entries)]
     git "tag", ["#{new_version}", "-a", "-m", "Version: #{new_version}"]
   end
