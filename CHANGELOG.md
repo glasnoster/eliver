@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+* Commit updated VERSION file
+
 ## 2.0.0
 * Use VERSION file to store version instead of mix.exs
 * Fix warnings
