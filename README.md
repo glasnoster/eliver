@@ -36,10 +36,6 @@ version: String.trim(File.read!("VERSION")),
 $ mix eliver.bump
 ```
 
-## TODO
-
-* Add support to release the package to Hex
-
 ## Contributing
 
 Please do.
