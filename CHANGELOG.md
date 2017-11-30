@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.3
+* Improving the change log input user prompt
+
 ## 2.0.2
 * Include VERSION in hex package
 
