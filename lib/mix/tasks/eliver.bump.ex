@@ -73,7 +73,7 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp get_changelog_entries do
-    {:ok, result} = get_list "Enter the changes"
+    {:ok, result} = get_list "Enter the changes, enter a blank line when you're done"
     result
   end
 
