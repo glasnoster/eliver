@@ -36,6 +36,9 @@ version: String.trim(File.read!("VERSION")),
 $ mix eliver.bump
 ```
 
+![Example](./eliver.svg)
+<img src="./eliver.svg">
+
 ## Contributing
 
 Please do.
