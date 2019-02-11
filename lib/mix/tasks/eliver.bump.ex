@@ -137,18 +137,18 @@ defmodule Mix.Tasks.Eliver.Bump do
   end
 
   defp check_for_git_problems do
-    # cond do
-    #   !Eliver.Git.is_tracking_branch? ->
-    #     {:error, "This branch is not tracking a remote branch. Aborting..."}
-    #   !Eliver.Git.on_master? && !continue_on_branch?() ->
-    #     {:error, "Aborting"}
-    #   Eliver.Git.index_dirty? ->
-    #     {:error, "Git index dirty. Commit changes before continuing"}
-    #   Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
-    #     {:error, "This branch is not up to date with upstream"}
-    #   true ->
+    cond do
+      !Eliver.Git.is_tracking_branch? ->
+        {:error, "This branch is not tracking a remote branch. Aborting..."}
+      !Eliver.Git.on_master? && !continue_on_branch?() ->
+        {:error, "Aborting"}
+      Eliver.Git.index_dirty? ->
+        {:error, "Git index dirty. Commit changes before continuing"}
+      Eliver.Git.fetch! && Eliver.Git.upstream_changes? ->
+        {:error, "This branch is not up to date with upstream"}
+      true ->
         {:ok}
-    # end
+    end
   end
 
   defp continue_on_branch? do
