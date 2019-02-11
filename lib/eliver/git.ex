@@ -96,7 +96,7 @@ Version #{new_version}:
 #{Enum.map(changelog_entries, fn(x) -> "* " <> x end) |> Enum.join("\n")}
     """
   end
-  defp aggregated_commit_message(umbrella_changes, app_changes) do
+  defp aggregated_commit_message(umbrella_changes, app_changes) when not is_nil(app_changes) do
     """
 Version #{elem(umbrella_changes, 3)}:
 
@@ -108,6 +108,13 @@ Nested Changes:
       ++
       nested_commit_messages(elem(umbrella_changes, 4))
     end) |> Enum.join("\n")}
+    """
+  end
+  defp aggregated_commit_message(umbrella_changes, _app_changes) do
+    """
+Version #{elem(umbrella_changes, 3)}:
+
+#{Enum.map(elem(umbrella_changes, 4), fn(x) -> "* " <> x end) |> Enum.join("\n")}
     """
   end
 

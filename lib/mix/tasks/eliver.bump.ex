@@ -28,16 +28,29 @@ defmodule Mix.Tasks.Eliver.Bump do
       {:ok, sub_apps} ->
         sub_apps = Map.put(sub_apps, :umbrella, ".")
 
-        changes = Enum.map(sub_apps, fn({app, app_path}) ->
+        changes = Enum.map(sub_apps, fn
+
+          {:umbrella, app_path} ->
+            # Note changes re required for the umbrella app
+            {current_version, new_version, changelog_entries} = get_changes(app_path, :normal)
+            {:umbrella, app_path, current_version, new_version, changelog_entries}
+
+          {app, app_path} ->
 
           say "\n\n=============================================="
           say "Bump details for #{Atom.to_string(app)}"
           say "=============================================="
 
-          {current_version, new_version, changelog_entries} = get_changes(app_path, :multi)
+          get_changes(app_path, :multi)
+          |> case  do
+            nil -> nil
+            {current_version, new_version, changelog_entries} ->
+              {app, app_path, current_version, new_version, changelog_entries}
+          end
 
-          {app, app_path, current_version, new_version, changelog_entries}
-        end) |> IO.inspect()
+
+        end)
+        |> Enum.filter(fn(change) -> not is_nil(change) end)
 
         if allow_changes?(changes) do
           make_changes(changes)
@@ -56,7 +69,12 @@ defmodule Mix.Tasks.Eliver.Bump do
 
   defp get_changes(root_for_changes \\ ".", bump_type \\ :normal) do
     {current_version, new_version} = get_new_version(root_for_changes, bump_type)
-    {current_version, new_version, get_changelog_entries()}
+
+    if current_version == new_version do
+      nil
+    else
+      {current_version, new_version, get_changelog_entries()}
+    end
   end
 
   defp allow_changes?(changes) when is_list(changes) do
