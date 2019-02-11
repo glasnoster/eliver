@@ -89,7 +89,7 @@ defmodule Eliver.Git do
     String.replace_trailing(str, "\n", "")
   end
 
-  def commit_message(new_version, changelog_entries) do
+  defp commit_message(new_version, changelog_entries) do
     """
 Version #{new_version}:
 

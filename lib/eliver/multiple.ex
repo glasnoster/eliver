@@ -1,7 +1,7 @@
 defmodule Eliver.Multiple do
 
   def list_sub_apps() do
-    Mix.Project.apps_paths() |> IO.inspect()
+    Mix.Project.apps_paths()
     |> case do
       nil -> {:error, :unknown_app_structure}
       sub_apps -> {:ok, sub_apps}
