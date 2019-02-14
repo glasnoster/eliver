@@ -56,17 +56,21 @@ defmodule Eliver.Git do
 
     git "commit", ["-m", aggregated_commit_message(umbrella_changes, app_changes)]
 
-    for {app, app_path, _current_version, new_version, changelog_entries} <- commit_changes do
+    Enum.map(commit_changes, fn({app, app_path, _current_version, new_version, changelog_entries}) ->
       if app == :umbrella do
         git "tag", ["#{new_version}", "-a", "-m", "Version: #{new_version}"]
+
+        "#{new_version}"
       else
         git "tag", ["#{app_path}/#{new_version}", "-a", "-m", "Version(#{Atom.to_string(app)}): #{new_version}"]
+
+        "#{app_path}/#{new_version}"
       end
-    end
+    end)
   end
 
-  def push!(new_version) do
-    git "push", ["-q", "origin", current_branch(), new_version]
+  def push!(tags) do
+    git "push", ["-q", "origin", current_branch()] ++ tags
   end
 
   defp git(command, args) when is_list(args) do

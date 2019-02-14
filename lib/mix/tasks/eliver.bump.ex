@@ -123,9 +123,10 @@ defmodule Mix.Tasks.Eliver.Bump do
       Eliver.ChangeLogFile.bump(new_version, changelog_entries, "#{app_path}/CHANGELOG.md")
     end
 
-    Eliver.Git.commit!(changes)
+    tags = Eliver.Git.commit!(changes)
+
     say "Pushing to origin..."
-    Eliver.Git.push!(Eliver.VersionFile.version())
+    Eliver.Git.push!(tags)
   end
 
   defp make_changes(new_version, changelog_entries) do
