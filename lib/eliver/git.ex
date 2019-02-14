@@ -69,8 +69,12 @@ defmodule Eliver.Git do
     end)
   end
 
-  def push!(tags) do
-    git "push", ["-q", "origin", current_branch()] ++ tags
+  def push!(tags) when is_list(tags) do
+    attributes = ["-q", "origin", current_branch()] ++ tags
+    git "push", attributes
+  end
+  def push!(tag) do
+    git "push", ["-q", "origin", current_branch(), tag]
   end
 
   defp git(command, args) when is_list(args) do
