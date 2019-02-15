@@ -114,7 +114,7 @@ Nested Changes:
     #{Enum.flat_map(app_changes, fn(app_change) ->
       [nested_commit_version(elem(app_change, 1), elem(app_change, 3))]
       ++
-      nested_commit_messages(elem(umbrella_changes, 4))
+      nested_commit_messages(elem(app_change, 4))
     end) |> Enum.join("\n")}
     """
   end
