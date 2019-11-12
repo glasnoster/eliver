@@ -67,9 +67,9 @@ defmodule Eliver.Git do
 
   defp commit_message(new_version, changelog_entries) do
     """
-Version #{new_version}:
+    Version #{new_version}:
 
-#{Enum.map(changelog_entries, fn(x) -> "* " <> x end) |> Enum.join("\n")}
+    #{Enum.map(changelog_entries, fn(x) -> "* " <> x end) |> Enum.join("\n")}
     """
   end
 
