@@ -30,10 +30,25 @@ end
 version: String.trim(File.read!("VERSION")),
 ```
 
-## Usage
+## Usage - Normal Apps
 
 ```bash
 $ mix eliver.bump
+```
+
+## Usage - Umbrella Apps
+
+In umbrella apps there are two supported use-cases:
+
+  1. A single version file is provided, with all sub-apps sharing the same version number.
+  2. Sub-app versions are managed seperately. In this case, each app has a seperate `VERSION` and `CHANGELOG.md` file.
+
+  For option 1, eliver is used in the same manner as for normal Elixir apps.
+
+  For option 2, eliver provides a `--multi` flag.  
+
+```bash
+$ mix eliver.bump --multi
 ```
 
 ## Contributing

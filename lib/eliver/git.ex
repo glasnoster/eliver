@@ -41,8 +41,40 @@ defmodule Eliver.Git do
     git "tag", ["#{new_version}", "-a", "-m", "Version: #{new_version}"]
   end
 
-  def push!(new_version) do
-    git "push", ["-q", "origin", current_branch(), new_version]
+  def commit!(commit_changes) do
+    for change <- commit_changes do
+      git "add", "#{elem(change, 1)}/CHANGELOG.md"
+      git "add", "#{elem(change, 1)}/VERSION"
+    end
+
+    umbrella_changes = Enum.find(commit_changes,
+      fn({app, app_path, current_version, new_version, changelog_entries}) ->
+        app == :umbrella
+      end
+    )
+    app_changes = List.delete(commit_changes, umbrella_changes)
+
+    git "commit", ["-m", aggregated_commit_message(umbrella_changes, app_changes)]
+
+    Enum.map(commit_changes, fn({app, app_path, _current_version, new_version, changelog_entries}) ->
+      if app == :umbrella do
+        git "tag", ["#{new_version}", "-a", "-m", "Version: #{new_version}"]
+
+        "#{new_version}"
+      else
+        git "tag", ["#{app_path}/#{new_version}", "-a", "-m", "Version(#{Atom.to_string(app)}): #{new_version}"]
+
+        "#{app_path}/#{new_version}"
+      end
+    end)
+  end
+
+  def push!(tags) when is_list(tags) do
+    attributes = ["-q", "origin", current_branch()] ++ tags
+    git "push", attributes
+  end
+  def push!(tag) do
+    git "push", ["-q", "origin", current_branch(), tag]
   end
 
   defp git(command, args) when is_list(args) do
@@ -72,6 +104,33 @@ defmodule Eliver.Git do
     #{Enum.map(changelog_entries, fn(x) -> "* " <> x end) |> Enum.join("\n")}
     """
   end
+  defp aggregated_commit_message(umbrella_changes, app_changes) when not is_nil(app_changes) do
+    """
+Version #{elem(umbrella_changes, 3)}:
 
+#{Enum.map(elem(umbrella_changes, 4), fn(x) -> "* " <> x end) |> Enum.join("\n")}
+
+Nested Changes:
+    #{Enum.flat_map(app_changes, fn(app_change) ->
+      [nested_commit_version(elem(app_change, 1), elem(app_change, 3))]
+      ++
+      nested_commit_messages(elem(app_change, 4))
+    end) |> Enum.join("\n")}
+    """
+  end
+  defp aggregated_commit_message(umbrella_changes, _app_changes) do
+    """
+Version #{elem(umbrella_changes, 3)}:
+
+#{Enum.map(elem(umbrella_changes, 4), fn(x) -> "* " <> x end) |> Enum.join("\n")}
+    """
+  end
+
+  defp nested_commit_version(app, version) do
+    "\t#{app} - #{version}"
+  end
+  defp nested_commit_messages(change_strings) do
+    Enum.map(change_strings, fn(change_string) -> "\t\t" <> change_string end)
+  end
 
 end
